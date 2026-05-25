@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Фэнтези</title>
+</head>
+<body>
+<div class="container">
+    <h1>🔥 Фэнтези</h1>
+    <img src="{{ url_for('static', filename='4.jpg') }}" style="width:55%;">
+    <p>Выбери произведение:</p>
+    <a href="/f_reincarnation"><button>✨ Моя типичная реинкарнация</button></a><br><br>
+    <a href="/f_temniy_bog"><button>📖 Тёмный бог</button></a><br><br>
+    <a href="/f_academy_magii"><button>📖 Академия магии</button></a><br><br>
+    <a href="/f_insignificant_character"><button>✨ Незначительный персонаж собственной истории</button></a><br><br>
+    <a href="/f_copy_skill"><button>✨ Мой навык – копировать способности других</button></a><br><br>
+    <a href="/catalog"><button>🔙 Назад в каталог</button></a>
+</div>
+</body>
+</html>

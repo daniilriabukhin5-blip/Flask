@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Каталог</title>
+</head>
+<body>
+<div class="container">
+    <h1> Каталог</h1>
+    <img src="{{ url_for('static', filename='3.jpg') }}" style="width: 100%; border-radius: 20px;">
+    <p>Выбирай категорию:</p>
+    <a href="/fantasy"><button>🔥 Фэнтези</button></a><br><br>
+    <a href="/murim"><button>🥋 Мурим</button></a><br><br>
+    <a href="/romance"><button>💖 Романтика</button></a><br><br>
+    <a href="/yuri"><button>👭 Юри</button></a><br><br>
+    <a href="/yaoi"><button>👬 Яой</button></a><br><br>
+    <a href="/"><button>🏠 На главную</button></a>
+</div>
+</body>
+</html>

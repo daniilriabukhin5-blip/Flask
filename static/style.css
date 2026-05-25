@@ -1,0 +1,702 @@
+/* ==============================================
+   MANGAVAULT — style.css  v3.0
+   Полный финальный стиль читалки манги
+   ==============================================
+
+   👇 ВСЕ НАСТРОЙКИ ТОЛЬКО ЗДЕСЬ
+   ============================================== */
+
+:root {
+    /* ФОН */
+    --bg-start: #0d0618;
+    --bg-end:   #170a26;
+
+    /* АКЦЕНТ */
+    --accent:       #e0407b;
+    --accent-light: #f072a0;
+    --accent-dark:  #9e2255;
+    --accent-glow:  rgba(224, 64, 123, 0.28);
+
+    /* ПОВЕРХНОСТИ */
+    --surface-1: rgba(28, 13, 46, 0.82);
+    --surface-2: rgba(18,  8, 35, 0.92);
+    --surface-3: rgba(55, 25, 82, 0.45);
+
+    /* ТЕКСТ */
+    --text:       #f0e6ff;
+    --text-muted: #9478b8;
+    --text-gold:  #fbbf5a;
+
+    /* РАМКИ */
+    --border:     rgba(170, 110, 255, 0.16);
+    --border-hot: rgba(224,  64, 123, 0.50);
+
+    /* СКРУГЛЕНИЯ */
+    --r-card: 26px;
+    --r-btn:  60px;
+    --r-img:  18px;
+    --r-sm:   12px;
+
+    /* АНИМАЦИЯ */
+    --speed: 0.22s;
+
+    /* ШРИФТЫ */
+    --font-body:  'Nunito', 'Segoe UI', system-ui, sans-serif;
+    --font-title: 'Cinzel Decorative', Georgia, serif;
+    --font-mono:  'Share Tech Mono', monospace;
+}
+
+/* ==============================================
+   ГОТОВЫЕ ЦВЕТОВЫЕ ТЕМЫ — вставь в :root
+   ==============================================
+
+   Киберпанк:
+   --bg-start:#04111e; --bg-end:#081a30;
+   --accent:#00cfff; --accent-light:#66e5ff;
+   --accent-dark:#0077aa; --text-gold:#00ffcc;
+   --accent-glow:rgba(0,207,255,0.25);
+   --border:rgba(0,180,255,0.18); --border-hot:rgba(0,207,255,0.5);
+
+   Кофе:
+   --bg-start:#180c05; --bg-end:#281505;
+   --accent:#d4893a; --accent-light:#eda85e;
+   --accent-dark:#8c531a; --text-gold:#ffd08a;
+   --accent-glow:rgba(212,137,58,0.25);
+   --border:rgba(210,150,80,0.18); --border-hot:rgba(212,137,58,0.5);
+
+   Сакура:
+   --bg-start:#170810; --bg-end:#280f20;
+   --accent:#f06090; --accent-light:#f898b8;
+   --accent-dark:#a03060; --text-gold:#ffcce0;
+   --accent-glow:rgba(240,96,144,0.25);
+   --border:rgba(240,120,160,0.18); --border-hot:rgba(240,96,144,0.5);
+
+   Чёрный самурай:
+   --bg-start:#060608; --bg-end:#0e0e14;
+   --accent:#c8a84b; --accent-light:#e0c872;
+   --accent-dark:#7a6020; --text-gold:#e8d090;
+   --accent-glow:rgba(200,168,75,0.25);
+   --border:rgba(200,168,75,0.16); --border-hot:rgba(200,168,75,0.5);
+
+   ============================================== */
+
+/* Шрифты в <head>:
+   <link href="https://fonts.googleapis.com/css2?
+     family=Nunito:wght@400;600;700;800&
+     family=Cinzel+Decorative:wght@700&
+     family=Share+Tech+Mono&display=swap"
+   rel="stylesheet">
+*/
+
+
+/* ==============================================
+   СБРОС
+   ============================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+img, video { max-width: 100%; display: block; }
+button { font-family: inherit; }
+
+/* ==============================================
+   ФОН СТРАНИЦЫ
+   ============================================== */
+body {
+    font-family: var(--font-body);
+    background: linear-gradient(148deg, var(--bg-start) 0%, var(--bg-end) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Сетчатая текстура */
+body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Угловые ореолы */
+body::after {
+    content: "";
+    position: fixed; inset: 0;
+    background:
+        radial-gradient(ellipse 65% 55% at  5%  0%, rgba(224,64,123,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 45% at 95% 100%, rgba(110,50,200,0.10) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==============================================
+   ПРОГРЕСС-БАР СКРОЛЛА
+   Вставь первой строкой в <body>:
+   <div class="progress-container">
+     <div class="progress-bar" id="progressBar"></div>
+   </div>
+   ============================================== */
+.progress-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: rgba(0,0,0,0.3);
+    z-index: 9999;
+}
+.progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--text-gold));
+    transition: width 0.08s linear;
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ==============================================
+   КНОПКА «НАВЕРХ»
+   Вставь перед </body>:
+   <button id="scrollTop">↑</button>
+   ============================================== */
+#scrollTop {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 1000;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35), 0 0 20px var(--accent-glow);
+    margin: 0;
+    padding: 0;
+}
+#scrollTop.show { opacity: 1; visibility: visible; }
+#scrollTop:hover {
+    transform: translateY(-5px);
+    background: var(--accent-light);
+    box-shadow: 0 8px 24px var(--accent-glow);
+}
+#scrollTop::after { display: none; }
+
+/* ==============================================
+   ГЛАВНЫЙ КОНТЕЙНЕР
+   ============================================== */
+.container {
+    position: relative; z-index: 1;
+    max-width: 1280px; margin: 0 auto;
+    background: var(--surface-1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: var(--r-card);
+    padding: 36px 40px;
+    border: 1px solid var(--border);
+    box-shadow:
+        0 28px 56px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.07);
+    animation: fadeUp 0.45s ease both;
+}
+
+/* ==============================================
+   ЗАГОЛОВКИ
+   ============================================== */
+h1 {
+    font-family: var(--font-title);
+    font-size: clamp(1.9rem, 5vw, 3.3rem);
+    text-align: center;
+    background: linear-gradient(118deg, var(--text-gold) 15%, #fde68a 75%, var(--text-gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 10px rgba(251,191,90,0.3));
+    margin-bottom: 28px;
+    letter-spacing: 0.03em;
+    animation: fadeDown 0.55s ease both;
+}
+
+h2 {
+    font-size: 1.45rem; color: var(--text-gold); font-weight: 800;
+    margin: 30px 0 14px; padding-left: 16px; position: relative;
+}
+h2::before {
+    content: "";
+    position: absolute; left: 0; top: 10%; bottom: 10%;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-light));
+    border-radius: 4px;
+}
+
+h3 { font-size: 1.1rem; color: var(--text-gold); font-weight: 700; margin: 18px 0 10px; }
+
+/* ==============================================
+   КАРТИНКИ
+   ============================================== */
+img {
+    border-radius: var(--r-img);
+    border: 1px solid var(--border);
+    height: auto;
+    transition: transform var(--speed) cubic-bezier(0.2,0.9,0.4,1.1), box-shadow var(--speed), border-color var(--speed);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+img:hover {
+    transform: scale(1.03) translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.55);
+    border-color: var(--accent);
+}
+
+/* ==============================================
+   КНОПКИ
+   ============================================== */
+button, .button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: linear-gradient(100deg, var(--accent) 0%, var(--accent-light) 100%);
+    border: none; color: #fff;
+    font-family: var(--font-body); font-weight: 800; font-size: 0.95rem;
+    padding: 11px 28px; border-radius: var(--r-btn); cursor: pointer;
+    box-shadow: 0 5px 0 var(--accent-dark), 0 0 22px var(--accent-glow);
+    transition: all var(--speed) ease;
+    letter-spacing: 0.3px; margin: 4px;
+    position: relative; overflow: hidden; white-space: nowrap;
+}
+button::after, .button::after {
+    content: "";
+    position: absolute; top: 0; left: -120%;
+    width: 55%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.45s ease; pointer-events: none;
+}
+button:hover::after, .button:hover::after { left: 170%; }
+button:hover, .button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 0 var(--accent-dark), 0 4px 28px var(--accent-glow);
+    filter: brightness(1.08);
+}
+button:active, .button:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--accent-dark); }
+
+.button-outline {
+    background: transparent; border: 2px solid var(--accent);
+    color: var(--accent-light); box-shadow: none;
+}
+.button-outline::after { display: none; }
+.button-outline:hover {
+    background: rgba(224,64,123,0.1); border-color: var(--accent-light); color: #fff;
+    box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-2px); filter: none;
+}
+.button-outline:active { transform: translateY(2px); box-shadow: none; }
+
+.button-glass {
+    background: rgba(255,255,255,0.07); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.13); color: var(--text); box-shadow: none;
+}
+.button-glass::after { display: none; }
+.button-glass:hover {
+    background: rgba(255,255,255,0.14); border-color: var(--accent);
+    color: #fff; transform: translateY(-2px); filter: none;
+    box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.button-sm { font-size: 0.8rem; padding: 7px 18px; }
+
+/* ==============================================
+   НАВИГАЦИОННАЯ ШАПКА
+   ============================================== */
+.navbar {
+    position: sticky; top: 0; z-index: 500;
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 0 14px; margin-bottom: 32px;
+    border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    background: linear-gradient(to bottom, var(--bg-start) 80%, transparent);
+    backdrop-filter: blur(12px);
+}
+.navbar-logo {
+    font-family: var(--font-title); font-size: 1.25rem; color: var(--text-gold);
+    margin-right: auto; flex-shrink: 0;
+    filter: drop-shadow(0 1px 6px rgba(251,191,90,0.3));
+}
+.navbar a {
+    padding: 6px 16px; border-radius: var(--r-btn);
+    font-size: 0.85rem; font-weight: 700; color: var(--text-muted);
+    transition: background var(--speed), color var(--speed);
+}
+.navbar a:hover { background: var(--surface-3); color: var(--text); }
+.navbar a.active { color: var(--accent-light); background: rgba(224,64,123,0.1); }
+
+/* ==============================================
+   ПОИСК И ФИЛЬТР
+   ============================================== */
+.search-box {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 50px; padding: 8px 8px 8px 22px;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 28px;
+    transition: border-color var(--speed), box-shadow var(--speed);
+}
+.search-box:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.search-box input {
+    background: transparent; border: none;
+    font-size: 0.95rem; font-family: var(--font-body);
+    color: var(--text); width: 100%; outline: none;
+}
+.search-box input::placeholder { color: var(--text-muted); }
+.search-box button { margin: 0; flex-shrink: 0; }
+
+.custom-select { position: relative; display: inline-block; }
+.custom-select select {
+    appearance: none; background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: 40px;
+    padding: 8px 36px 8px 18px;
+    font-size: 0.88rem; font-family: var(--font-body);
+    color: var(--text); cursor: pointer; outline: none;
+    transition: border-color var(--speed);
+}
+.custom-select select:focus { border-color: var(--accent); }
+.custom-select::after {
+    content: "▾"; position: absolute; right: 14px; top: 50%;
+    transform: translateY(-50%); font-size: 0.75rem;
+    color: var(--accent-light); pointer-events: none;
+}
+
+/* ==============================================
+   ГАЛЕРЕЯ И КАРТОЧКИ
+   ============================================== */
+.gallery {
+    display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 24px; margin: 32px 0;
+}
+
+.card {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r-card); padding: 14px;
+    text-align: center; width: 220px; cursor: pointer;
+    position: relative; overflow: hidden;
+    transition:
+        transform var(--speed) cubic-bezier(0.2,0.9,0.4,1.15),
+        box-shadow var(--speed), border-color var(--speed);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.32);
+    animation: fadeUp 0.5s ease both;
+}
+.card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.13), transparent);
+}
+.card:hover {
+    transform: translateY(-10px) scale(1.025);
+    border-color: var(--accent);
+    box-shadow: 0 22px 40px rgba(0,0,0,0.5), 0 0 30px var(--accent-glow);
+}
+.card img {
+    width: 100%; aspect-ratio: 2/3; object-fit: cover;
+    border-radius: 14px; margin-bottom: 10px;
+    border: none; box-shadow: none; transition: none;
+}
+.card:hover img { transform: none; }
+.card p { font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.card .card-meta { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+.card .rating { color: #fbbf24; font-size: 0.78rem; margin: 5px 0 2px; }
+.card .rating span { color: var(--text-muted); margin-left: 3px; }
+
+.card-badge {
+    position: absolute; top: 20px; left: 20px;
+    background: var(--accent); color: #fff;
+    font-size: 0.64rem; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 99px; pointer-events: none;
+}
+
+.new-badge {
+    position: absolute; top: 20px; right: 14px;
+    background: #22c55e; color: #fff;
+    font-size: 0.62rem; font-weight: 800;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 99px;
+    animation: pulse 2s infinite; pointer-events: none;
+}
+
+/* Стаггер */
+.card:nth-child(1) { animation-delay: 0.04s; }
+.card:nth-child(2) { animation-delay: 0.08s; }
+.card:nth-child(3) { animation-delay: 0.12s; }
+.card:nth-child(4) { animation-delay: 0.16s; }
+.card:nth-child(5) { animation-delay: 0.20s; }
+.card:nth-child(6) { animation-delay: 0.24s; }
+.card:nth-child(7) { animation-delay: 0.28s; }
+.card:nth-child(8) { animation-delay: 0.32s; }
+
+/* ==============================================
+   СТРАНИЦА КАТЕГОРИЙ
+   ============================================== */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 20px; margin: 32px 0;
+}
+.category-card {
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: 22px; padding: 20px 12px 16px;
+    text-align: center; cursor: pointer;
+    transition: all var(--speed);
+    position: relative; overflow: hidden;
+}
+.category-card::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(145deg, var(--accent-glow), transparent);
+    opacity: 0; transition: opacity var(--speed);
+}
+.category-card:hover {
+    transform: translateY(-8px); border-color: var(--accent);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.4), 0 0 24px var(--accent-glow);
+}
+.category-card:hover::before { opacity: 1; }
+.category-card .cat-icon { font-size: 2.4rem; margin-bottom: 10px; display: block; }
+.category-card p { font-weight: 700; font-size: 0.9rem; }
+
+/* ==============================================
+   СТРАНИЦА ПРОИЗВЕДЕНИЯ
+   ============================================== */
+.product {
+    max-width: 880px; margin: 0 auto;
+    background: var(--surface-2);
+    padding: 34px 38px; border-radius: 32px;
+    border: 1px solid var(--border-hot);
+    box-shadow: 0 0 60px rgba(224,64,123,0.12), 0 24px 48px rgba(0,0,0,0.4);
+}
+.product-header {
+    display: flex; gap: 30px; align-items: flex-start; margin-bottom: 26px;
+}
+.product-cover {
+    flex-shrink: 0; width: 195px; border-radius: 16px;
+    border: 1px solid var(--border); aspect-ratio: 2/3; object-fit: cover;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+}
+.product-genre {
+    font-family: var(--font-mono); font-size: 0.75rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent-light); margin-bottom: 8px;
+}
+.product-title {
+    font-family: var(--font-title);
+    font-size: clamp(1.4rem, 3vw, 2rem); color: var(--text-gold);
+    margin-bottom: 4px; line-height: 1.2;
+    filter: drop-shadow(0 2px 6px rgba(251,191,90,0.2));
+}
+.product-original { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; }
+
+.product-stats { display: flex; gap: 20px; margin-bottom: 16px; flex-wrap: wrap; }
+.product-stat .value { font-weight: 800; font-size: 1.1rem; color: var(--text); }
+.product-stat .label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0; }
+.tag {
+    padding: 4px 14px; border: 1px solid var(--border); border-radius: 99px;
+    font-size: 0.74rem; color: var(--text-muted); background: var(--surface-3);
+    cursor: pointer;
+    transition: border-color var(--speed), color var(--speed), background var(--speed);
+}
+.tag:hover { border-color: var(--accent); color: var(--accent-light); background: rgba(224,64,123,0.08); }
+
+.description {
+    background: rgba(0,0,0,0.22); border: 1px solid var(--border);
+    padding: 18px 22px; border-radius: 18px;
+    line-height: 1.78; color: var(--text-muted); font-size: 0.93rem; margin: 20px 0;
+}
+
+/* ==============================================
+   РЕЙТИНГ ЗВЁЗДАМИ (интерактивный, без JS)
+   Пример HTML:
+   <div class="stars">
+     <input type="radio" id="s5" name="rating" value="5"><label for="s5"></label>
+     <input type="radio" id="s4" name="rating" value="4"><label for="s4"></label>
+     <input type="radio" id="s3" name="rating" value="3"><label for="s3"></label>
+     <input type="radio" id="s2" name="rating" value="2"><label for="s2"></label>
+     <input type="radio" id="s1" name="rating" value="1"><label for="s1"></label>
+   </div>
+   ============================================== */
+.stars { display: inline-flex; flex-direction: row-reverse; gap: 4px; }
+.stars input { display: none; }
+.stars label { font-size: 1.6rem; color: #3a2a4a; cursor: pointer; transition: color 0.1s, transform 0.1s; }
+.stars label::before { content: "★"; }
+.stars label:hover,
+.stars label:hover ~ label,
+.stars input:checked ~ label { color: #fbbf24; text-shadow: 0 0 8px rgba(251,191,36,0.5); }
+.stars label:hover { transform: scale(1.2); }
+
+.rating-static { display: inline-flex; align-items: center; gap: 4px; font-size: 1rem; color: #fbbf24; }
+.rating-static .count { color: var(--text-muted); font-size: 0.82rem; margin-left: 6px; }
+
+/* ==============================================
+   ТУЛТИПЫ
+   Пример: <span data-tooltip="Это подсказка">текст</span>
+   ============================================== */
+[data-tooltip] { position: relative; cursor: help; }
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute; bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    transform-origin: bottom center;
+    background: var(--surface-2); color: var(--text);
+    padding: 6px 14px; border-radius: 20px; font-size: 0.74rem;
+    white-space: nowrap; pointer-events: none; opacity: 0;
+    transition: opacity 0.2s, transform 0.2s; z-index: 20;
+    border: 1px solid var(--accent); box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+}
+[data-tooltip]:hover::before { opacity: 1; transform: translateX(-50%) scale(1); }
+
+/* ==============================================
+   СКЕЛЕТОН (заглушка при загрузке)
+   Пример: <div class="skeleton" style="width:220px;aspect-ratio:2/3"></div>
+   ============================================== */
+.skeleton {
+    border-radius: var(--r-img);
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ==============================================
+   ПАГИНАЦИЯ
+   ============================================== */
+.pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 40px 0 20px; flex-wrap: wrap; }
+.pagination .page {
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 40px;
+    padding: 7px 16px; font-weight: 700; font-size: 0.88rem;
+    color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+}
+.pagination .page:hover {
+    background: rgba(224,64,123,0.12); border-color: var(--accent);
+    color: var(--accent-light); transform: scale(1.06);
+}
+.pagination .page.active {
+    background: var(--accent); border-color: var(--accent);
+    color: #fff; box-shadow: 0 0 16px var(--accent-glow);
+}
+
+/* ==============================================
+   МОДАЛЬНОЕ ОКНО (через :target, без JS)
+   Пример:
+   <a href="#my-modal">Открыть</a>
+   <div class="modal" id="my-modal">
+     <div class="modal-content">
+       <h3>Заголовок</h3>
+       <p>Текст</p>
+       <a href="#" class="modal-close">Закрыть ×</a>
+     </div>
+   </div>
+   ============================================== */
+.modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.72); backdrop-filter: blur(10px);
+    z-index: 9998; display: flex; align-items: center; justify-content: center;
+    visibility: hidden; opacity: 0; transition: all 0.3s;
+}
+.modal:target { visibility: visible; opacity: 1; }
+.modal-content {
+    background: var(--surface-2); border-radius: 32px;
+    max-width: 480px; width: 90%; padding: 32px;
+    border: 1px solid var(--border-hot); text-align: center;
+    box-shadow: 0 0 60px rgba(224,64,123,0.2), 0 24px 48px rgba(0,0,0,0.5);
+    transform: scale(0.92); transition: transform 0.3s;
+}
+.modal:target .modal-content { transform: scale(1); }
+.modal-close { display: inline-block; margin-top: 20px; color: var(--text-muted); font-size: 0.85rem; border-bottom: 1px dashed var(--border); }
+.modal-close:hover { color: var(--accent-light); }
+
+/* ==============================================
+   SCROLL-REVEAL
+   Добавь класс .scroll-reveal к любому блоку —
+   JS внизу файла сделает остальное.
+   ============================================== */
+.scroll-reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
+
+/* ==============================================
+   ТЕКСТ, СПИСКИ, РАЗДЕЛИТЕЛИ
+   ============================================== */
+p { font-size: 0.97rem; line-height: 1.72; margin-bottom: 10px; }
+li { font-size: 0.97rem; line-height: 1.65; margin-bottom: 8px; margin-left: 18px; list-style: disc; }
+ul, ol { margin-bottom: 14px; }
+::selection { background: var(--accent); color: #fff; text-shadow: none; }
+hr, .divider { border: none; border-top: 1px solid var(--border); margin: 26px 0; }
+
+/* ==============================================
+   СКРОЛЛБАР
+   ============================================== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-end); }
+::-webkit-scrollbar-thumb { background: rgba(180,100,255,0.28); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ==============================================
+   АНИМАЦИИ
+   ============================================== */
+@keyframes fadeUp   { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeDown { from { opacity:0; transform:translateY(-24px);} to { opacity:1; transform:translateY(0); } }
+@keyframes pulse    { 0% { box-shadow:0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow:0 0 0 10px rgba(34,197,94,0); } 100% { box-shadow:0 0 0 0 rgba(34,197,94,0); } }
+@keyframes float    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+.float { animation: float 3s ease-in-out infinite; }
+
+/* ==============================================
+   АДАПТИВ
+   ============================================== */
+@media (max-width: 760px) {
+    body { padding: 10px 8px; }
+    .container { padding: 18px 14px; border-radius: 20px; }
+    h1 { font-size: 1.75rem; margin-bottom: 16px; }
+    h2 { font-size: 1.2rem; }
+    .gallery { gap: 14px; }
+    .card { width: 148px; padding: 11px; border-radius: 18px; }
+    .card p { font-size: 0.82rem; }
+    button, .button { font-size: 0.88rem; padding: 10px 22px; }
+    .product { padding: 18px 16px; border-radius: 22px; }
+    .product-header { flex-direction: column; align-items: center; text-align: center; }
+    .product-cover { width: 155px; }
+    .product-stats { justify-content: center; }
+    .tags { justify-content: center; }
+    .category-grid { grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 14px; }
+    .navbar a { padding: 5px 12px; font-size: 0.8rem; }
+    #scrollTop { bottom: 16px; right: 16px; width: 42px; height: 42px; font-size: 1.1rem; }
+}
+
+/* ==============================================
+   JS — вставь перед </body> в base.html
+   ==============================================
+
+<script>
+// Прогресс-бар скролла
+const bar = document.getElementById('progressBar');
+if (bar) {
+  window.addEventListener('scroll', () => {
+    const s = document.documentElement;
+    bar.style.width = (s.scrollTop / (s.scrollHeight - s.clientHeight) * 100) + '%';
+  });
+}
+
+// Кнопка "наверх"
+const topBtn = document.getElementById('scrollTop');
+if (topBtn) {
+  window.addEventListener('scroll', () => topBtn.classList.toggle('show', scrollY > 300));
+  topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
+
+// Scroll-reveal
+const obs = new IntersectionObserver(entries =>
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); }),
+  { threshold: 0.12 }
+);
+document.querySelectorAll('.scroll-reveal').forEach(el => obs.observe(el));
+</script>
+
+   ============================================== */

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Романтика</title>
+</head>
+<body style="font-size: 24px;">
+    <h1>💖 Романтика</h1>
+    <img src="{{ url_for('static', filename='5.jpg') }}" width="35%">
+    <p>Выбери произведение:</p>
+
+    <a href="/r_how_to_bring_mistress">
+        <button style="font-size: 20px; padding: 6px 15px;">✨ Как довести хозяйку</button>
+    </a>
+    <br><br>
+
+    <a href="/r_double_life_princess">
+        <button style="font-size: 20px; padding: 6px 15px;">✨ Двойная жизнь принцессы</button>
+    </a>
+    <br><br>
+
+    <a href="/r_royal_wedding">
+        <button style="font-size: 20px; padding: 6px 15px;">✨ Королевская свадьба</button>
+    </a>
+    <br><br>
+
+    <a href="/catalog">
+        <button style="font-size: 28px; padding: 12px 24px;">🔙 Назад в каталог</button>
+    </a>
+</body>
+</html>
